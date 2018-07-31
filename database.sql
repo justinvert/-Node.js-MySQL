@@ -41,3 +41,5 @@ VALUE ("Paper", "Office Supplies", 10.00, 100);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUE ("Headphones", "Music", 15.00, 50);
+
+SELECT * FROM products;
