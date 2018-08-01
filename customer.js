@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var password = require('./password.js');
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -7,8 +8,8 @@ var connection = mysql.createConnection({
 
   user: "root",
 
-  password: "",
-  database: ""
+  password: password.password.password,
+  database: "storeDB"
 });
 
 connection.connect(function(err) {
@@ -24,7 +25,7 @@ function afterConnection() {
     if (err)
     throw err;
     console.log(res);
-    
+
   connection.end();
    });
   }
