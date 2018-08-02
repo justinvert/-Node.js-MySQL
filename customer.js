@@ -35,7 +35,8 @@ connection.connect(function(err) {
         message: "Please enter the quantity you would like (Integers only) "
         }
     ]).then(function(answer){
-console.log(answer.amount)
+
+var inputAmount = answer.amount;
         var itemSelect = answer.item;
 var query = 'SELECT * FROM products WHERE ?';
 connection.query(query,{
@@ -43,8 +44,35 @@ connection.query(query,{
 }
 , function(err, res){
     for (var i = 0; i < res.length; i++){
-        console.log("You chose the item: " + res[i].product_name)
+        var priceUpdate = res[i].price * inputAmount;
+        var newQuantity = res[i].stock_quantity - inputAmount;
+
+        console.log("You chose the item: " + res[i].product_name);
+        console.log("The current quantity is: " + res[i].stock_quantity);
+        console.log("The price per quantity is: " + res[i].price.toFixed(2));
+        console.log("\nThe price amount for your quantity is: " + priceUpdate.toFixed(2));
+        console.log("The new quantity is: " + newQuantity)
+
+    if (inputAmount > res[i].stock_quantity){
+        console.log("Insufficient quantity!");
+
     }
+    else if (inputAmount < res[i].stock_quantity){
+        console.log("The quantity you will recieve is: " + inputAmount);
+        var query = connection.query(
+            "UPDATE products SET ? WHERE ?",
+            [{
+                stock_quantity: res[i].stock_quantity - inputAmount, 
+            },
+        {
+            item_id: itemSelect
+        }],
+            function (err, res){
+                console.log(res.affectedRows + " item updated")
+            }
+          )
+    }
+}
 })
 
 
