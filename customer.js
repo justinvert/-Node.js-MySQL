@@ -18,7 +18,7 @@ connection.connect(function(err) {
    throw err;
     console.log("Connection as " + connection.threadId);
     searchItems();
-    // afterConnection();
+
   });
 
 
@@ -50,25 +50,28 @@ connection.query(query,{
         console.log("You chose the item: " + res[i].product_name);
         console.log("The current quantity is: " + res[i].stock_quantity);
         console.log("The price per quantity is: " + res[i].price.toFixed(2));
-        console.log("\nThe price amount for your quantity is: " + priceUpdate.toFixed(2));
-        console.log("The new quantity is: " + newQuantity)
+
 
     if (inputAmount > res[i].stock_quantity){
         console.log("Insufficient quantity!");
+        connection.end();
 
     }
     else if (inputAmount < res[i].stock_quantity){
         console.log("The quantity you will recieve is: " + inputAmount);
+        console.log("\nThe price amount for your quantity is: " + priceUpdate.toFixed(2));
+        console.log("The new quantity is: " + newQuantity)
         var query = connection.query(
             "UPDATE products SET ? WHERE ?",
             [{
-                stock_quantity: res[i].stock_quantity - inputAmount, 
+                stock_quantity: newQuantity, 
             },
         {
             item_id: itemSelect
         }],
             function (err, res){
                 console.log(res.affectedRows + " item updated")
+                connection.end();
             }
           )
     }
@@ -77,15 +80,7 @@ connection.query(query,{
 
 
     });
+
   }
   
-function afterConnection() {
- connection.query("SELECT * FROM products", function(err, res) {
-    if (err)
-    throw err;
-    console.log(res);
- 
-  connection.end();
-   });
-  }
   
