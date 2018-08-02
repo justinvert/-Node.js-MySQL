@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var inquirer = require("inquirer");
 var password = require('./password/password.js');
 
 var connection = mysql.createConnection({
@@ -16,16 +17,39 @@ connection.connect(function(err) {
    if (err)
    throw err;
     console.log("Connection as " + connection.threadId);
-
-    afterConnection();
+    searchItems();
+    // afterConnection();
   });
+
+
+  function searchItems(){
+    inquirer.prompt({
+        name: "item",
+        type: "input",
+        message: "Which item would you like to search?"
+    }).then(function(answer){
+        console.log(answer.item);
+        var itemSelect = answer.item;
+var query = 'SELECT * FROM products WHERE ?';
+connection.query(query,{
+    item_id: itemSelect
+}
+, function(err, res){
+    for (var i = 0; i < res.length; i++){
+        console.log("You chose the item: " + res[i].product_name)
+    }
+})
+
+
+    });
+  }
   
 function afterConnection() {
  connection.query("SELECT * FROM products", function(err, res) {
     if (err)
     throw err;
     console.log(res);
-
+ 
   connection.end();
    });
   }
