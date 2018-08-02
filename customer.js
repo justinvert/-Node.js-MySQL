@@ -23,12 +23,19 @@ connection.connect(function(err) {
 
 
   function searchItems(){
-    inquirer.prompt({
+    inquirer.prompt([
+        {
         name: "item",
         type: "input",
-        message: "Which item would you like to search?"
-    }).then(function(answer){
-        console.log(answer.item);
+        message: "Which item would you like to search? (Item ID only) "
+    },
+        {
+        name: "amount",
+        type: "input",
+        message: "Please enter the quantity you would like (Integers only) "
+        }
+    ]).then(function(answer){
+console.log(answer.amount)
         var itemSelect = answer.item;
 var query = 'SELECT * FROM products WHERE ?';
 connection.query(query,{
