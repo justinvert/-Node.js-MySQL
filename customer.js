@@ -37,7 +37,7 @@ connection.connect(function(err) {
     ]).then(function(answer){
 
 var inputAmount = answer.amount;
-        var itemSelect = answer.item;
+var itemSelect = answer.item;
 var query = 'SELECT * FROM products WHERE ?';
 connection.query(query,{
     item_id: itemSelect
@@ -80,7 +80,6 @@ connection.query(query,{
 
 
     });
-
   }
   
   
