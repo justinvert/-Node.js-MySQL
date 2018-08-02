@@ -34,7 +34,13 @@ connection.connect(function(err) {
           ]
         
       }).then(function(answer){
-    console.log (answer);
+    console.log(answer);
+
+    switch(answer.select){
+      case "View Products for Sale":
+      console.log("It works");
+      break;
+    }
     });
     connection.end();
   }
