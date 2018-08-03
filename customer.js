@@ -62,6 +62,7 @@ connection.query(query,{
 
         
         var priceUpdate = res[i].price * inputAmount;
+        var productUpdate = res[i].product_sales + priceUpdate;
         var newQuantity = res[i].stock_quantity - inputAmount;
 
         console.log("You chose the item: " + res[i].product_name);
@@ -82,6 +83,20 @@ connection.query(query,{
             "UPDATE products SET ? WHERE ?",
             [{
                 stock_quantity: newQuantity, 
+            },
+        {
+            item_id: itemSelect
+        }],
+            function (err, res){
+                console.log(res.affectedRows + " item updated")
+             
+            }
+          )
+
+          var query2 = connection.query(
+            "UPDATE products SET ? WHERE ?",
+            [{
+                product_sales: productUpdate, 
             },
         {
             item_id: itemSelect

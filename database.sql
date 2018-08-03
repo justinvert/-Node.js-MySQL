@@ -8,7 +8,15 @@ CREATE TABLE products(
     product_name VARCHAR(15),
     department_name VARCHAR(15),
     price DECIMAL(20,2),
+    product_sales DECIMAL(20,2),
     stock_quantity INT NULL,
+    PRIMARY KEY (item_id)
+);
+
+CREATE TABLE departments(
+    department_id INT NOT NULL AUTO_INCREMENT,
+    department_name VARCHAR(15),
+    over_head_costs DECIMAL(20,2),
     PRIMARY KEY (item_id)
 );
 

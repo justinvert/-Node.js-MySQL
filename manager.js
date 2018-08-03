@@ -132,18 +132,16 @@ selectProduct();
    
         for (var i = 0; i < res.length; i++){
 
-   
-       if (res[i].item_id === itemSelect){
-         inputAmount = res[i].stock_quantity + inputAmount
-       }
+       var quantity = res[i].item_id;
+       if (quantity === itemSelect){}
         }
       
     });
-newStock= inputAmount;
-      connection.query("UPDATE products SET stock_quantity =  ?  WHERE ?",
+
+      connection.query("UPDATE products SET stock_quantity = stock_quantity + ?  WHERE ?",
         [
-          newStock
-         ,itemSelect
+          inputAmount
+          ,itemSelect
       
     ], function(err, res){
       console.log("Inventory updated for item #" + itemSelect)
