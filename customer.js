@@ -102,7 +102,6 @@ connection.query(query,{
             item_id: itemSelect
         }],
             function (err, res){
-                console.log(res.affectedRows + " item updated")
                 connection.end();
             }
           )

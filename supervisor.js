@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
-var table = require("cli-table");
+var table = require("console.table");
 var password = require('./password/password.js');
 
 var connection = mysql.createConnection({
@@ -51,6 +51,41 @@ connection.connect(function(err) {
    }
 
    function viewProducts(){
+var a;
+var b;
+    connection.query(" SELECT * FROM departments JOIN products.product_sales",
+// SELECT departments.department_id, departments.department_name, products.product_sales FROM departments
+
+function(err, res) {
+
+    
+        console.table(res)
+        for (var i = 0; i < res.length; i++){
+        
+            a = res[i].department_id;
+            b = res[i].department_name;
+        }console.table([
+        {
+         department_id: a,
+         
+         
+        }, {
+            department_name: b,
+       
+        }, {
+            over_head_costs: a,
+            
+          }, {
+            product_sales: 'product_sales',
+            
+          }, {
+            total_profit: 'total_profit',
+            
+          }
+      ]);
+    });
+    
+      
 
    }
 
