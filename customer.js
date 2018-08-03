@@ -27,7 +27,8 @@ connection.connect(function(err) {
         {
         name: "item",
         type: "input",
-        message: "Which item would you like to search? (Item ID only) "
+        message: "Which item would you like to search? (Item ID only) ",
+    
     },
         {
         name: "amount",
@@ -36,9 +37,11 @@ connection.connect(function(err) {
         }
     ]).then(function(answer){
 
+
 var inputAmount = answer.amount;
 var itemSelect = answer.item;
 var query = 'SELECT * FROM products WHERE ?';
+
 connection.query(query,{
     item_id: itemSelect
 }
