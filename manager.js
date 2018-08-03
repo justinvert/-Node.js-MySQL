@@ -52,7 +52,7 @@ connection.connect(function(err) {
       break;
 
       case "Add New Product":
-      exitList();
+      newProduct();
       break;
 
       case "Exit.":
@@ -101,12 +101,24 @@ selectProduct();
       {
         name: "item",
         type: "input",
-        message: "What is the ID of the item you would like to update?"
+        message: "What is the ID of the item you would like to update?",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
       },
       {
         name: "inventory",
         type: "input",
-        message: "Please provide the new quantity."
+        message: "Please provide the new quantity.",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
         
       }
     
@@ -115,38 +127,74 @@ selectProduct();
       var itemSelect = answer.item;
       var inputAmount = answer.inventory;
       var query =  "SELECT * FROM products";
-      var queryUpdate = "UPDATE products SET ? WHERE ?";
       
       connection.query(query, function(err, res){
-        if (err) throw err;
-    for (var i = 0; i < res.length; i++) {
-      
-      
-    }
+   
+        for (var i = 0; i < res.length; i++){
 
-      connection.query(queryUpdate,
+   
+       if (res[i].item_id === itemSelect){
+         inputAmount = res[i].stock_quantity + inputAmount
+       }
+        }
+      
+    });
+newStock= inputAmount;
+      connection.query("UPDATE products SET stock_quantity =  ?  WHERE ?",
         [
-            {
-        stock_quantity: inputAmount
-        
-      },
-      {
-        item_id: itemSelect
-      }
+          newStock
+         ,itemSelect
+      
     ], function(err, res){
-      console.log(res[i].stock_quantity)
-
+      console.log("Inventory updated for item #" + itemSelect)
+  console.log("\n");
+    selectProduct();
       })
-      console.log("\n");
-      selectProduct();
-    });  });
+  
+      });
+       
   }
   
   function newProduct(){
-    
-    
+    inquirer.prompt([
+      {
+        name: "item",
+        type: "input",
+        message: "What item would you like to add?"
+      },
+      {
+        name: "inventory",
+        type: "input",
+        message: "What is the quantity of this item? (Integers only)"
+        
+      },
+      {
+        name: "department",
+        type: "input",
+        message: "What department is it in?"
+        
+      },
+      {
+        name: "price",
+        type: "input",
+        message: "What is the price of it? (Integers only)"
+        
+      }
+    ]).then(function(answer){
+      connection.query(
+        "INSERT INTO products SET ?",
+        {
+          product_name: answer.item,
+          department_name: answer.department,
+          price: answer.price,
+          stock_quantity: answer.inventory
+        },
+        function(err, res) {
+          
+        
+      });
+    });
   }
-
   function exitList(){
     console.log("Thank you.")
     connection.end();

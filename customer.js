@@ -28,15 +28,27 @@ connection.connect(function(err) {
         name: "item",
         type: "input",
         message: "Which item would you like to search? (Item ID only) ",
-    
+        validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
     },
         {
         name: "amount",
         type: "input",
-        message: "Please enter the quantity you would like (Integers only) "
-        }
+        message: "Please enter the quantity you would like (Integers only) ",
+        validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
+    }
     ]).then(function(answer){
 
+     
 
 var inputAmount = answer.amount;
 var itemSelect = answer.item;
@@ -47,6 +59,8 @@ connection.query(query,{
 }
 , function(err, res){
     for (var i = 0; i < res.length; i++){
+
+        
         var priceUpdate = res[i].price * inputAmount;
         var newQuantity = res[i].stock_quantity - inputAmount;
 
