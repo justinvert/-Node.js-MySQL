@@ -43,6 +43,18 @@ connection.connect(function(err) {
       viewProducts();
       break;
 
+      case "View Low Inventory":
+      lowInventory();
+      break;
+
+      case "Add to Inventory":
+      addtoInventory();
+      break;
+
+      case "Add New Product":
+      exitList();
+      break;
+
       case "Exit.":
       exitList();
       break;
@@ -68,17 +80,70 @@ connection.connect(function(err) {
  
   }
 
-
   
   function lowInventory(){
+    connection.query("SELECT * FROM products", function(err, res) {
+      if (err) throw err;
+      console.log ("The following products are low on inventory: \n")
+for (var i = 0; i < res.length; i++) {
+  if (res[i].stock_quantity <= 5){
+    console.log (res[i].item_id + ". " + res[i].product_name )
+  }
+}
+console.log("\n");
+selectProduct();
+});
     
   }
 
   function addtoInventory(){
+    inquirer.prompt([
+      {
+        name: "item",
+        type: "input",
+        message: "What is the ID of the item you would like to update?"
+      },
+      {
+        name: "inventory",
+        type: "input",
+        message: "Please provide the new quantity."
+        
+      }
     
-  }
+    ]).then(function(answer){
+   
+      var itemSelect = answer.item;
+      var inputAmount = answer.inventory;
+      var query =  "SELECT * FROM products";
+      var queryUpdate = "UPDATE products SET ? WHERE ?";
+      
+      connection.query(query, function(err, res){
+        if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      
+      
+    }
 
+      connection.query(queryUpdate,
+        [
+            {
+        stock_quantity: inputAmount
+        
+      },
+      {
+        item_id: itemSelect
+      }
+    ], function(err, res){
+      console.log(res[i].stock_quantity)
+
+      })
+      console.log("\n");
+      selectProduct();
+    });  });
+  }
+  
   function newProduct(){
+    
     
   }
 
