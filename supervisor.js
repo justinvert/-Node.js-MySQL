@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
-var table = require("console.table");
+var Table = require("cli-table");
+var table = require("console.table")
 var password = require('./password/password.js');
 
 var connection = mysql.createConnection({
@@ -51,38 +52,31 @@ connection.connect(function(err) {
    }
 
    function viewProducts(){
-var a;
-var b;
-    connection.query(" SELECT * FROM departments JOIN products.product_sales",
-// SELECT departments.department_id, departments.department_name, products.product_sales FROM departments
+var query = "SELECT department_id, department_name, over_head_costs "
+query+= " FROM departments INNER JOIN products ON  department.department_name = products.department_name";
 
-function(err, res) {
-
+var table = new Table({
+    head: ['ID', 'Department', "Costs", "Total Sales"]
+  , colWidths: [10, 20,10,20]
+});
+connection.query(query, function(err, res) {
+console.table(res)
     
-        console.table(res)
+      
         for (var i = 0; i < res.length; i++){
         
             a = res[i].department_id;
             b = res[i].department_name;
-        }console.table([
-        {
-         department_id: a,
-         
-         
-        }, {
-            department_name: b,
-       
-        }, {
-            over_head_costs: a,
-            
-          }, {
-            product_sales: 'product_sales',
-            
-          }, {
-            total_profit: 'total_profit',
-            
-          }
-      ]);
+            c = res[i].over_head_costs;
+            d = res[i].department_name;
+           table.push(
+                [a, b, c, d]
+            );
+
+        }
+               console.log(table.toString());
+
+  
     });
     
       

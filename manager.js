@@ -124,27 +124,21 @@ selectProduct();
     
     ]).then(function(answer){
    
-      var itemSelect = answer.item;
-      var inputAmount = answer.inventory;
+      var itemSelect = parseInt(answer.item);
+      var inputAmount = parseInt(answer.inventory);
       var query =  "SELECT * FROM products";
       
       connection.query(query, function(err, res){
-   
-        for (var i = 0; i < res.length; i++){
-
-       var quantity = res[i].item_id;
-       if (quantity === itemSelect){}
-        }
       
     });
-
-      connection.query("UPDATE products SET stock_quantity = stock_quantity + ?  WHERE ?",
+      connection.query("UPDATE products SET stock_quantity = stock_quantity + ?  WHERE item_id = ?",
         [
           inputAmount
           ,itemSelect
       
     ], function(err, res){
       console.log("Inventory updated for item #" + itemSelect)
+      
   console.log("\n");
     selectProduct();
       })
