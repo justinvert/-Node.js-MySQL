@@ -24,8 +24,6 @@ This will install the [dependencies](https://docs.npmjs.com/files/package.json) 
 </br>
 **Notable dependencies used:**
 
-    "cli-table": "^0.3.1",
-    
     "console.table": "^0.10.0",
     
     "inquirer": "^6.0.0",
@@ -56,7 +54,9 @@ If the manager decides there is a new product that they would like users to have
 <img src="./images/manager.js - 6.png"></br>
 ## Supervisor.js
 The final JavaScript file for this app will show each of the products for sale by their department. </br>
-
+<img src="./images/supervisor.js - 1.png"></br>
 The user can also create a new department and assign it the proper overhead cost.</br>
-
+<img src="./images/supervisor.js - 2.png"></br>
 If the user simply wishes to exit the app, this JavaScript file (as well as manager.js) provides an `Exit.` option that will take the user back to the command line.</br>
+<img src="./images/supervisor.js - 3.png"></br>
+<img src="./images/supervisor.js - 4.png"></br>
