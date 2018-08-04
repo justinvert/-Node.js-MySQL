@@ -1,5 +1,5 @@
 # A Node.js & MySQL CLI App
-*CLI - Command Line App*
+*CLI - Command Line Interface*
 
 ## Overview
 The purpose of this app is to create a simulated online store, similar to Amazon, that displays multiple items and allows users to interact with them. Each file has its own specific logic and through a variety of options, allows the user to decide what to do with the database(s) created with MySQL.
