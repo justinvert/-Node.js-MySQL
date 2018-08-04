@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
+var table = require("console.table");
 var password = require('./password/password.js');
 
 var connection = mysql.createConnection({
@@ -66,19 +67,13 @@ connection.connect(function(err) {
 
   function viewProducts(){
     connection.query("SELECT * FROM products", function(err, res) {
-             if (err) throw err;
+      if (err) throw err;
+console.table(res)
+console.log("\n");
+selectProduct();
+});
 
-      for (var i = 0; i < res.length; i++) {
-        console.log("\n" + res[i].item_id + ". " + res[i].product_name 
-        + "\n Price: "+ res[i].price 
-        + "\n Quantity: " + res[i].stock_quantity);
-        
-      }
-      console.log("\n");
-      selectProduct();
-    });
- 
-  }
+}
 
   
   function lowInventory(){
@@ -112,7 +107,7 @@ selectProduct();
       {
         name: "inventory",
         type: "input",
-        message: "Please provide the new quantity.",
+        message: "Please provide the new quantity: ",
         validate: function(value) {
           if (isNaN(value) === false) {
             return true;
@@ -138,7 +133,7 @@ selectProduct();
       
     ], function(err, res){
       console.log("Inventory updated for item #" + itemSelect)
-      
+    
   console.log("\n");
     selectProduct();
       })
@@ -182,7 +177,9 @@ selectProduct();
           stock_quantity: answer.inventory
         },
         function(err, res) {
-          
+          console.log ("New item added!")
+          console.log("\n");
+          selectProduct();
         
       });
     });

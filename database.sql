@@ -9,7 +9,7 @@ CREATE TABLE products(
     department_name VARCHAR(15),
     price DECIMAL(20,2),
     stock_quantity INT NULL,
-    product_sales DECIMAL(20,2),
+   
     PRIMARY KEY (item_id)
 );
 
@@ -20,8 +20,8 @@ CREATE TABLE departments(
     PRIMARY KEY (department_id)
 );
 
-INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales)
-VALUE ("Candy", "Food", .50, 100, 1000);
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUE ("Candy", "Food", .50, 100);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUE ("Learning MySQL", "Books", 10.00, 10);

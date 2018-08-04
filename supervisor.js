@@ -1,6 +1,5 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
-var Table = require("cli-table");
 var table = require("console.table")
 var password = require('./password/password.js');
 
@@ -46,46 +45,78 @@ connection.connect(function(err) {
        case "Create New Department":
        createDepartment();
        break;
+
+       case "Exit.":
+       exitList();
+       break;
      }
      });
      
    }
 
    function viewProducts(){
-var query = "SELECT department_id, department_name, over_head_costs "
-query+= " FROM departments INNER JOIN products ON  department.department_name = products.department_name";
+// var query = 'SELECT * FROM departments';
+var query = "SELECT departments.department_id, departments.department_name, departments.over_head_costs  ";
+      query += "FROM departments";
 
-var table = new Table({
-    head: ['ID', 'Department', "Costs", "Total Sales"]
-  , colWidths: [10, 20,10,20]
-});
+//The query must SELECT the product_sales from the products database.
+//The SUM is the product_sales - over_head_cost
+//The departments and products are joined, as they both have the same department_name column
+
 connection.query(query, function(err, res) {
 console.table(res)
-    
-      
-        for (var i = 0; i < res.length; i++){
-        
-            a = res[i].department_id;
-            b = res[i].department_name;
-            c = res[i].over_head_costs;
-            d = res[i].department_name;
-           table.push(
-                [a, b, c, d]
-            );
-
-        }
-               console.log(table.toString());
-
-  
+console.log("\n");
+selectOptions(); 
     });
-    
-      
+
 
    }
 
    function createDepartment(){
+    inquirer.prompt([
+      {
+        name: "department",
+        type: "input",
+        message: "Please enter the new department name: ",
+        validate: function validateName(name){
+          return name !== '';
+      }
+      },
+      {
+        name: "cost",
+        type: "input",
+        message: "Please enter the new overhead cost: ",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+        }
+        
+      
+    
+    ]).then(function(answer){
+   
+      var newDepartment = answer.department;
+      var newCost = answer.cost;
+    
+        var query = connection.query("INSERT INTO departments(department_name, over_head_costs) VALUES (? , ?)",
+        [
+          newDepartment,
+          newCost
 
-}
+    ],
+       function(err, res){
+        console.log("Added")
+        
+    console.log("\n");
+    selectOptions();
+        })
+    
+        });
+         
+    }
 
    function exitList(){
     console.log("Thank you.")

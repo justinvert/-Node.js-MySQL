@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
+var table = require("console.table");
 var password = require('./password/password.js');
 
 var connection = mysql.createConnection({
@@ -17,10 +18,20 @@ connection.connect(function(err) {
    if (err)
    throw err;
     console.log("Connection as " + connection.threadId);
-    searchItems();
-
+    displayItems();
   });
 
+  function displayItems(){
+    connection.query("SELECT * FROM products", function(err, res) {
+        if (err) throw err;
+console.table(res)
+ console.log("\n");
+ searchItems();
+});
+
+}
+    
+  
 
   function searchItems(){
     inquirer.prompt([
